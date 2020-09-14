@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as _ from 'lodash';
 import * as fs from 'fs';
 import { PROJECT_CONFIG, KIWI_CONFIG_FILE } from './const';
+import ts = require('typescript');
 
 function lookForFiles(dir: string, fileName: string): string {
   const files = fs.readdirSync(dir);

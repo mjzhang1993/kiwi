@@ -12,7 +12,7 @@ import { getLangData } from './getLangData';
 import { getProjectConfig, getLangDir } from '../utils';
 
 const CONFIG = getProjectConfig();
-const srcLangDir = getLangDir(CONFIG.srcLang);
+const srcLangDir = getLangDir(CONFIG.srcLang); 
 
 function updateLangFiles(keyValue, text, validateDuplicate) {
   if (!_.startsWith(keyValue, 'I18N.')) {
@@ -155,8 +155,10 @@ function createImportI18N(filePath) {
   const ast = ts.createSourceFile('', code, ts.ScriptTarget.ES2015, true, ts.ScriptKind.TSX);
   const isTsFile = _.endsWith(filePath, '.ts');
   const isTsxFile = _.endsWith(filePath, '.tsx');
+  const isJsFile = _.endsWith(filePath, '.js');
+  const isJsxFile = _.endsWith(filePath, '.jsx');
   const isVueFile = _.endsWith(filePath, '.vue');
-  if (isTsFile || isTsxFile) {
+  if (isTsFile || isTsxFile || isJsFile || isJsxFile) {
     const importStatement = `${CONFIG.importI18N}\n`;
     const pos = ast.getStart(ast, false);
     const updateCode = code.slice(0, pos) + importStatement + code.slice(pos);

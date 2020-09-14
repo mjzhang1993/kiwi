@@ -23,7 +23,7 @@ function findAllChineseText(dir: string) {
   const dirPath = path.resolve(process.cwd(), dir);
   const files = getSpecifiedFiles(dirPath, CONFIG.ignoreDir, CONFIG.ignoreFile);
   const filterFiles = files.filter(file => {
-    return file.endsWith('.ts') || file.endsWith('.tsx') || file.endsWith('.vue');
+    return file.endsWith('.ts') || file.endsWith('.tsx') || file.endsWith('.vue') || file.endsWith('.js') || file.endsWith('.jsx');
   });
   const allTexts = filterFiles.reduce((pre, file) => {
     const code = readFile(file);
@@ -166,6 +166,7 @@ function extractAll(dirPath?: string) {
       })
       .catch(err => {
         if (err) {
+          console.log(err);
           console.log('google翻译出问题了...');
         }
       });

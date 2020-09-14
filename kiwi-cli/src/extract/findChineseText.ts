@@ -7,6 +7,7 @@ import * as compiler from '@angular/compiler';
 import * as compilerVue from 'vue-template-compiler';
 import * as babel from '@babel/core';
 const DOUBLE_BYTE_REGEX = /[^\x00-\xff]/g;
+
 /**
  * 去掉文件中的注释
  * @param code
