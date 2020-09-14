@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/alibaba/kiwi.git"
+    "url": "git+ssh://git@github.com/mjzhang1993/kiwi.git"
   },
   "keywords": [
     "cli",
