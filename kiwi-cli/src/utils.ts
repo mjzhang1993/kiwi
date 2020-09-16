@@ -30,9 +30,17 @@ function lookForFiles(dir: string, fileName: string): string {
 
 /**
  * 获得项目配置信息
+ * .js 文件优先，默认生成的还是 json 文件，但是可以手动改成 .js 文件
  */
 function getProjectConfig() {
   const rootDir = path.resolve(process.cwd(), `./`);
+  const configFileJS = lookForFiles(rootDir, KIWI_CONFIG_FILE.replace(path.extname(KIWI_CONFIG_FILE), '.js'));
+  console.log(configFileJS);
+  if (configFileJS && fs.existsSync(configFileJS)) {
+    const obj = require(configFileJS);
+    console.log(obj.default || obj);
+    return obj.default || obj;
+  }
   const configFile = lookForFiles(rootDir, KIWI_CONFIG_FILE);
   let obj = PROJECT_CONFIG.defaultConfig;
 

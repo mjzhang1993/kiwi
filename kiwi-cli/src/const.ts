@@ -19,8 +19,8 @@ export const PROJECT_CONFIG = {
       requestOptions: {}
     },
     importI18N: `import I18N from 'src/utils/I18N';`,
-    ignoreDir: '',
-    ignoreFile: ''
+    ignoreDir: '', // NOTICE: 增加对数组的支持，可以传入 string | string[]
+    ignoreFile: '', // NOTICE: 增加对 RegExp 的支持，可以传入 string 或者 RegExp 的字符串
   },
   langMap: {
     ['en-US']: 'en',

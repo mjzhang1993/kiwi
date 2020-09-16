@@ -14,6 +14,8 @@
 - 调整了 批量替换 kiwi --extract 生成文件中对插值的处理 (kiwiIntl.template() 改为 kiwiIntl.get() )
 - 调整了 可以从命令行中传入 googleApiKey kiwi --extract [dirPath] [apiKey]
 - 调整了 kiwi --mock [apiKey] [lang] 可以从命令行中传入 googleApiKey
+- 调整了 kiwi 的配置文件 kiwi-config.json 支持 js 的文件格式即可以在 kiwi --init 之后将 kiwi-config.json 改为 kiwi-config.js
+- 调整了 kiwi 配置文件, 支持 ignore 多个目录及 ignoreFile 设置正则 ignoreDir: string | string[] 与 ignoreFile: string | RegExp （RegExp 的配置前提是要将配置文件改为 kiwi-config.js）
 
 ```bash
 # 如何使用

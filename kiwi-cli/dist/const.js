@@ -21,7 +21,7 @@ exports.PROJECT_CONFIG = {
         },
         importI18N: `import I18N from 'src/utils/I18N';`,
         ignoreDir: '',
-        ignoreFile: ''
+        ignoreFile: '',
     },
     langMap: {
         ['en-US']: 'en',
