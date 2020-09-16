@@ -25,7 +25,7 @@ exports.PROJECT_CONFIG = {
     },
     langMap: {
         ['en-US']: 'en',
-        ['en_US']: 'en'
+        ['zh-TW']: 'zh-tw'
     },
     zhIndexFile: `import common from './common';
 

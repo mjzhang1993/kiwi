@@ -5,6 +5,40 @@
 
 中文 | [English](https://github.com/alibaba/kiwi/blob/master/README-en.md)
 
+## 与原项目对比变化说明
+> Fork from [alibaba/kiwi](https://github.com/alibaba/kiwi)
+
+> 与原项目的变化
+
+- 增加了 批量替换 kiwi --extract 对 js jsx 文件的支持
+- 调整了 批量替换 kiwi --extract 生成文件中对插值的处理 (kiwiIntl.template() 改为 kiwiIntl.get() )
+- 调整了 可以从命令行中传入 googleApiKey kiwi --extract [dirPath] [apiKey]
+- 调整了 kiwi --mock [apiKey] [lang] 可以从命令行中传入 googleApiKey
+
+```bash
+# 如何使用
+git clone git@github.com:mjzhang1993/kiwi.git
+
+# 进入 kiwi-cli 
+cd kiwi-cli 
+
+# 安装依赖
+npm install 
+
+# 编译
+npm run prepublish
+
+# 获得 kiwi-cli 文件夹地址 /path/to/kiwi-cli
+pwd
+
+# 全局安装
+npm install -g /path/to/kiwi-cli
+
+# 项目中使用
+kiwi --extract [dirPath] [apiKey]
+```
+
+
 ## 如何使用
 
 > yarn global add kiwi-clis && yarn add kiwi-intl

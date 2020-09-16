@@ -38,9 +38,9 @@ commander
     .option('--import [file] [lang]', '导入翻译文案')
     .option('--export [file] [lang]', '导出未翻译的文案')
     .option('--sync', '同步各种语言的文案')
-    .option('--mock', '使用 Google 翻译')
+    .option('--mock [apiKey] [lang]', '使用 Google 翻译')
     .option('--unused', '导出未使用的文案')
-    .option('--extract [dirPath]', '一键替换指定文件夹下的所有中文文案')
+    .option('--extract [dirPath] [apiKey]', '一键替换指定文件夹下的所有中文文案')
     .parse(process.argv);
 if (commander.init) {
     (() => __awaiter(void 0, void 0, void 0, function* () {
@@ -100,16 +100,21 @@ if (commander.unused) {
 if (commander.mock) {
     const spinner = ora('使用 Google 翻译中...').start();
     sync_1.sync(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield mock_1.mockLangs();
+        if (commander.mock === true && commander.args.length === 0) {
+            yield mock_1.mockLangs();
+        }
+        else {
+            yield mock_1.mockLangs(commander.mock, commander.args[0]);
+        }
         spinner.succeed('使用 Google 翻译成功');
     }));
 }
 if (commander.extract) {
-    if (commander.extract === true) {
+    if (commander.extract === true && commander.args.length === 0) {
         extract_1.extractAll();
     }
     else {
-        extract_1.extractAll(commander.extract);
+        extract_1.extractAll(commander.extract, commander.args[0]);
     }
 }
 //# sourceMappingURL=index.js.map

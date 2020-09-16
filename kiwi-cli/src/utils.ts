@@ -139,10 +139,10 @@ function withTimeout(promise, ms) {
 /**
  * 使用google翻译
  */
-function translateText(text, toLang) {
+function translateText(text, toLang, apiKey?: string) {
   const CONFIG = getProjectConfig();
   const options = CONFIG.translateOptions;
-  const { translate: googleTranslate } = require('google-translate')(CONFIG.googleApiKey, options);
+  const { translate: googleTranslate } = require('google-translate')(CONFIG.googleApiKey || apiKey, options);
   return withTimeout(
     new Promise((resolve, reject) => {
       googleTranslate(text, 'zh', PROJECT_CONFIG.langMap[toLang], (err, translation) => {

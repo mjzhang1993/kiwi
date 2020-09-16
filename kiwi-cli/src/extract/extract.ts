@@ -45,8 +45,9 @@ function findAllChineseText(dir: string) {
  * 递归匹配项目中所有的代码的中文
  * @param {dirPath} 文件夹路径
  */
-function extractAll(dirPath?: string) {
-  if (!CONFIG.googleApiKey) {
+function extractAll(dirPath?: string, apiKey?: string) {
+  console.log(apiKey);
+  if (!CONFIG.googleApiKey && !apiKey) {
     console.log('请配置googleApiKey');
     return;
   }
@@ -92,7 +93,7 @@ function extractAll(dirPath?: string) {
       const reg = /[^a-zA-Z\x00-\xff]+/g;
       const findText = curr.text.match(reg);
       const transText = findText ? findText.join('').slice(0, 4) : '中文符号';
-      return prev.concat(translateText(transText, 'en_US'));
+      return prev.concat(translateText(transText, 'en_US', apiKey));
     }, []);
 
     Promise.all(translatePromises)

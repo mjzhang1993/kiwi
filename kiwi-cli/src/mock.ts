@@ -13,25 +13,34 @@ import * as fs from 'fs';
 import * as _ from 'lodash';
 import { traverse, getProjectConfig, getLangDir } from './utils';
 const CONFIG = getProjectConfig();
-const { translate: googleTranslate } = require('google-translate')(CONFIG.googleApiKey);
 
 import { withTimeout, retry } from './utils';
 import { PROJECT_CONFIG } from './const';
 
-function translateText(text, toLang) {
-  return withTimeout(
-    new Promise((resolve, reject) => {
-      googleTranslate(text, 'zh', PROJECT_CONFIG.langMap[toLang], (err, translation) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(translation.translatedText);
-        }
-      });
-    }),
-    5000
-  );
-}
+const translateText = (function () {
+  let googleTranslate = null;
+
+  return function (text, toLang, apiKey?: string) {
+    if (!googleTranslate) {
+      console.log('require');
+      googleTranslate = require('google-translate')(CONFIG.googleApiKey || apiKey).translate;
+    }
+    return withTimeout(
+      new Promise((resolve, reject) => {
+        googleTranslate(text, 'zh', PROJECT_CONFIG.langMap[toLang], (err, translation) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(translation.translatedText);
+          }
+        });
+      }),
+      5000
+    );  
+  }
+
+})()
+
 /**
  * 获取中文文案
  */
@@ -60,7 +69,7 @@ function getDistText(dstLang) {
  * Mock 对应语言
  * @param dstLang
  */
-async function mockCurrentLang(dstLang) {
+async function mockCurrentLang(dstLang, apiKey) {
   const texts = getSourceText();
   const distTexts = getDistText(dstLang);
   const untranslatedTexts = {};
@@ -74,7 +83,7 @@ async function mockCurrentLang(dstLang) {
   });
   /** 调用 Google 翻译 */
   const translateAllTexts = Object.keys(untranslatedTexts).map(key => {
-    return translateText(untranslatedTexts[key], dstLang).then(translatedText => [key, translatedText]);
+    return translateText(untranslatedTexts[key], dstLang, apiKey).then(translatedText => [key, translatedText]);
   });
   /** 获取 Mocks 文案 */
   await Promise.all(translateAllTexts).then(res => {
@@ -107,11 +116,12 @@ function writeMockFile(dstLang, mocks) {
  * Mock 语言的未翻译的文案
  * @param lang
  */
-async function mockLangs(lang?: string) {
+async function mockLangs(apiKey?: string, lang?: string) {
   const CONFIG = getProjectConfig();
   const langs = lang ? [lang] : CONFIG.distLangs;
   const mockPromise = langs.map(lang => {
-    return mockCurrentLang(lang);
+    console.log(lang, apiKey);
+    return mockCurrentLang(lang, apiKey);
   });
   return Promise.all(mockPromise);
 }
