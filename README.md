@@ -36,6 +36,9 @@ npm install -g /path/to/kiwi-cli
 
 # 项目中使用
 kiwi --extract [dirPath] [apiKey]
+
+# kiwi mock 也有改动
+kiwi --mock [apiKey] [lang]
 ```
 
 
