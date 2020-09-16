@@ -153,7 +153,7 @@ function translateText(text, toLang, apiKey?: string) {
         }
       });
     }),
-    5000
+    15000
   );
 }
 

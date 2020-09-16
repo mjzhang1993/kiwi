@@ -43,7 +43,7 @@ const translateText = (function () {
                     resolve(translation.translatedText);
                 }
             });
-        }), 5000);
+        }), 15000);
     };
 })();
 /**

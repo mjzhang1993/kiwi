@@ -148,7 +148,7 @@ function translateText(text, toLang, apiKey) {
                 resolve(translation.translatedText);
             }
         });
-    }), 5000);
+    }), 15000);
 }
 exports.translateText = translateText;
 function findMatchKey(langObj, text) {
