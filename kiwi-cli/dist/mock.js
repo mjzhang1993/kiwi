@@ -31,7 +31,6 @@ const translateText = (function () {
     let googleTranslate = null;
     return function (text, toLang, apiKey) {
         if (!googleTranslate) {
-            console.log('require');
             googleTranslate = require('google-translate')(CONFIG.googleApiKey || apiKey).translate;
         }
         return utils_2.withTimeout(new Promise((resolve, reject) => {
@@ -127,7 +126,6 @@ function mockLangs(apiKey, lang) {
         const CONFIG = utils_1.getProjectConfig();
         const langs = lang ? [lang] : CONFIG.distLangs;
         const mockPromise = langs.map(lang => {
-            console.log(lang, apiKey);
             return mockCurrentLang(lang, apiKey);
         });
         return Promise.all(mockPromise);

@@ -46,7 +46,6 @@ function findAllChineseText(dir: string) {
  * @param {dirPath} 文件夹路径
  */
 function extractAll(dirPath?: string, apiKey?: string) {
-  console.log(apiKey);
   if (!CONFIG.googleApiKey && !apiKey) {
     console.log('请配置googleApiKey');
     return;

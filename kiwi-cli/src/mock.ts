@@ -22,7 +22,6 @@ const translateText = (function () {
 
   return function (text, toLang, apiKey?: string) {
     if (!googleTranslate) {
-      console.log('require');
       googleTranslate = require('google-translate')(CONFIG.googleApiKey || apiKey).translate;
     }
     return withTimeout(
@@ -120,7 +119,6 @@ async function mockLangs(apiKey?: string, lang?: string) {
   const CONFIG = getProjectConfig();
   const langs = lang ? [lang] : CONFIG.distLangs;
   const mockPromise = langs.map(lang => {
-    console.log(lang, apiKey);
     return mockCurrentLang(lang, apiKey);
   });
   return Promise.all(mockPromise);

@@ -35,10 +35,8 @@ function lookForFiles(dir: string, fileName: string): string {
 function getProjectConfig() {
   const rootDir = path.resolve(process.cwd(), `./`);
   const configFileJS = lookForFiles(rootDir, KIWI_CONFIG_FILE.replace(path.extname(KIWI_CONFIG_FILE), '.js'));
-  console.log(configFileJS);
   if (configFileJS && fs.existsSync(configFileJS)) {
     const obj = require(configFileJS);
-    console.log(obj.default || obj);
     return obj.default || obj;
   }
   const configFile = lookForFiles(rootDir, KIWI_CONFIG_FILE);
