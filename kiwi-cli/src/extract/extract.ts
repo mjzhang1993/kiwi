@@ -93,7 +93,7 @@ function extractAll(dirPath?: string, apiKey?: string) {
       const reg = /[^a-zA-Z\x00-\xff]+/g;
       const findText = curr.text.match(reg);
       const transText = findText ? findText.join('').slice(0, 4) : '中文符号';
-      return prev.concat(translateText(transText, 'en_US', apiKey));
+      return prev.concat(translateText(transText, 'en-US', apiKey));
     }, []);
 
     Promise.all(translatePromises)
