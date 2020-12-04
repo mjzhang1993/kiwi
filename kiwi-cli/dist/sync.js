@@ -28,7 +28,7 @@ function getTranslations(file, toLang) {
     const { default: texts } = require(srcFile);
     let distTexts;
     if (fs.existsSync(distFile)) {
-        const distTexts = require(distFile).default;
+        distTexts = require(distFile).default;
     }
     utils_1.traverse(texts, (text, path) => {
         const key = fileNameWithoutExt + '.' + path;
@@ -55,7 +55,7 @@ function writeTranslations(file, toLang, translations) {
     const fileContent = 'export default ' + JSON.stringify(rst, null, 2);
     const filePath = path.resolve(utils_1.getLangDir(toLang), path.basename(file));
     return new Promise((resolve, reject) => {
-        fs.writeFile(filePath, fileContent, err => {
+        fs.writeFile(filePath, utils_1.prettierFile(fileContent), err => {
             if (err) {
                 reject(err);
             }

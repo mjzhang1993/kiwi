@@ -5,11 +5,10 @@
 
 import * as fs from 'fs-extra';
 import * as _ from 'lodash';
-import * as prettier from 'prettier';
 import * as ts from 'typescript';
 import { readFile, writeFile } from './file';
 import { getLangData } from './getLangData';
-import { getProjectConfig, getLangDir } from '../utils';
+import { getProjectConfig, getLangDir, prettierFile } from '../utils';
 
 const CONFIG = getProjectConfig();
 const srcLangDir = getLangDir(CONFIG.srcLang); 
@@ -47,23 +46,6 @@ function updateLangFiles(keyValue, text, validateDuplicate) {
   }
 }
 
-/**
- * 使用 Prettier 格式化文件
- * @param fileContent
- */
-function prettierFile(fileContent) {
-  try {
-    return prettier.format(fileContent, {
-      parser: 'typescript',
-      trailingComma: 'all',
-      singleQuote: true
-    });
-  } catch (e) {
-    console.error(`代码格式化报错！${e.toString()}\n代码为：${fileContent}`);
-    return fileContent;
-  }
-}
-
 function generateNewLangFile(key, value) {
   const obj = _.set({}, key, value);
 
@@ -75,18 +57,19 @@ function addImportToMainLangFile(newFilename) {
   if (fs.existsSync(`${srcLangDir}/index.ts`)) {
     mainContent = fs.readFileSync(`${srcLangDir}/index.ts`, 'utf8');
     mainContent = mainContent.replace(/^(\s*import.*?;)$/m, `$1\nimport ${newFilename} from './${newFilename}';`);
-    if (/(}\);)/.test(mainContent)) {
-      if (/\,\n(}\);)/.test(mainContent)) {
+    console.log('test-result', /(}[\s|\,]*\);)/.test(mainContent));
+    if (/(}[\s|\,]*\);)/.test(mainContent)) {
+      if (/\,\s*(}[\s|\,]*\);)/.test(mainContent)) {
         /** 最后一行包含,号 */
-        mainContent = mainContent.replace(/(}\);)/, `  ${newFilename},\n$1`);
+        mainContent = mainContent.replace(/(}[\s|\,]*\);)/, `  ${newFilename},\n$1`);
       } else {
         /** 最后一行不包含,号 */
-        mainContent = mainContent.replace(/\n(}\);)/, `,\n  ${newFilename},\n$1`);
+        mainContent = mainContent.replace(/(\s*}[\s|\,]*\);)/, `,\n  ${newFilename},\n$1`);
       }
     }
     // 兼容 export default { common };的写法
     if (/(};)/.test(mainContent)) {
-      if (/\,\n(};)/.test(mainContent)) {
+      if (/\,\s*(};)/.test(mainContent)) {
         /** 最后一行包含,号 */
         mainContent = mainContent.replace(/(};)/, `  ${newFilename},\n$1`);
       } else {
@@ -98,7 +81,7 @@ function addImportToMainLangFile(newFilename) {
     mainContent = `import ${newFilename} from './${newFilename}';\n\nexport default Object.assign({}, {\n  ${newFilename},\n});`;
   }
 
-  fs.writeFileSync(`${srcLangDir}/index.ts`, mainContent);
+  fs.writeFileSync(`${srcLangDir}/index.ts`, prettierFile(mainContent));
 }
 
 /**

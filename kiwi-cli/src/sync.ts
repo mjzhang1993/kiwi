@@ -10,7 +10,7 @@ require('ts-node').register({
 import * as fs from 'fs';
 import * as path from 'path';
 import * as _ from 'lodash';
-import { traverse, getProjectConfig, getLangDir } from './utils';
+import { traverse, getProjectConfig, getLangDir, prettierFile } from './utils';
 const CONFIG = getProjectConfig();
 
 /**
@@ -26,7 +26,7 @@ function getTranslations(file, toLang) {
   const { default: texts } = require(srcFile);
   let distTexts;
   if (fs.existsSync(distFile)) {
-    const distTexts = require(distFile).default;
+    distTexts = require(distFile).default;
   }
 
   traverse(texts, (text, path) => {
@@ -58,7 +58,7 @@ function writeTranslations(file, toLang, translations) {
   const fileContent = 'export default ' + JSON.stringify(rst, null, 2);
   const filePath = path.resolve(getLangDir(toLang), path.basename(file));
   return new Promise((resolve, reject) => {
-    fs.writeFile(filePath, fileContent, err => {
+    fs.writeFile(filePath, prettierFile(fileContent), err => {
       if (err) {
         reject(err);
       } else {

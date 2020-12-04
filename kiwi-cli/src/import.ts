@@ -11,7 +11,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as _ from 'lodash';
 import { tsvParseRows } from 'd3-dsv';
-import { getAllMessages, getProjectConfig, traverse } from './utils';
+import { getAllMessages, getProjectConfig, traverse, prettierFile } from './utils';
 
 const CONFIG = getProjectConfig();
 
@@ -52,7 +52,7 @@ function writeMessagesToFile(messages: any, file: string, lang: string) {
   traverse(srcMessages, (message, key) => {
     _.setWith(rst, key, _.get(messages, key) || _.get(oldDstMessages, key), Object);
   });
-  fs.writeFileSync(dstFile + '.ts', 'export default ' + JSON.stringify(rst, null, 2));
+  fs.writeFileSync(dstFile + '.ts', prettierFile('export default ' + JSON.stringify(rst, null, 2)));
 }
 
 function importMessages(file: string, lang: string) {

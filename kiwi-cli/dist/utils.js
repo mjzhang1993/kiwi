@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.lookForFiles = exports.flatten = exports.findMatchValue = exports.findMatchKey = exports.translateText = exports.getProjectConfig = exports.getAllMessages = exports.withTimeout = exports.retry = exports.traverse = exports.getLangDir = exports.getKiwiDir = void 0;
+exports.prettierFile = exports.lookForFiles = exports.flatten = exports.findMatchValue = exports.findMatchKey = exports.translateText = exports.getProjectConfig = exports.getAllMessages = exports.withTimeout = exports.retry = exports.traverse = exports.getLangDir = exports.getKiwiDir = void 0;
 /**
  * @author linhuiw
  * @desc 工具方法
@@ -8,6 +8,7 @@ exports.lookForFiles = exports.flatten = exports.findMatchValue = exports.findMa
 const path = require("path");
 const _ = require("lodash");
 const fs = require("fs");
+const prettier = require("prettier");
 const const_1 = require("./const");
 function lookForFiles(dir, fileName) {
     const files = fs.readdirSync(dir);
@@ -192,4 +193,26 @@ function flatten(obj, prefix = '') {
     return ret;
 }
 exports.flatten = flatten;
+/**
+ * 使用 Prettier 格式化文件
+ * @param fileContent
+ */
+function prettierFile(fileContent) {
+    try {
+        return prettier.format(fileContent, {
+            parser: 'typescript',
+            printWidth: 100,
+            singleQuote: true,
+            trailingComma: "all",
+            arrowParens: "always",
+            semi: true,
+            tabWidth: 2
+        });
+    }
+    catch (e) {
+        console.error(`代码格式化报错！${e.toString()}\n代码为：${fileContent}`);
+        return fileContent;
+    }
+}
+exports.prettierFile = prettierFile;
 //# sourceMappingURL=utils.js.map

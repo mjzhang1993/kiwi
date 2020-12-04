@@ -53,7 +53,7 @@ function writeMessagesToFile(messages, file, lang) {
     utils_1.traverse(srcMessages, (message, key) => {
         _.setWith(rst, key, _.get(messages, key) || _.get(oldDstMessages, key), Object);
     });
-    fs.writeFileSync(dstFile + '.ts', 'export default ' + JSON.stringify(rst, null, 2));
+    fs.writeFileSync(dstFile + '.ts', utils_1.prettierFile('export default ' + JSON.stringify(rst, null, 2)));
 }
 function importMessages(file, lang) {
     let messagesToImport = getMessagesToImport(file);

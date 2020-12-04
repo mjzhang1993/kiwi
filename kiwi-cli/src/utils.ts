@@ -5,6 +5,7 @@
 import * as path from 'path';
 import * as _ from 'lodash';
 import * as fs from 'fs';
+import * as prettier from 'prettier';
 import { PROJECT_CONFIG, KIWI_CONFIG_FILE } from './const';
 import ts = require('typescript');
 
@@ -199,6 +200,27 @@ function flatten(obj, prefix = '') {
   return ret;
 }
 
+/**
+ * 使用 Prettier 格式化文件
+ * @param fileContent
+ */
+function prettierFile(fileContent) {
+  try {
+    return prettier.format(fileContent, {
+      parser: 'typescript',
+      printWidth: 100,
+      singleQuote: true,
+      trailingComma: "all",
+      arrowParens: "always",
+      semi: true,
+      tabWidth: 2
+    });
+  } catch (e) {
+    console.error(`代码格式化报错！${e.toString()}\n代码为：${fileContent}`);
+    return fileContent;
+  }
+}
+
 export {
   getKiwiDir,
   getLangDir,
@@ -211,5 +233,6 @@ export {
   findMatchKey,
   findMatchValue,
   flatten,
-  lookForFiles
+  lookForFiles,
+  prettierFile,
 };
